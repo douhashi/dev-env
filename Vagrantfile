@@ -26,4 +26,8 @@ Vagrant.configure("2") do |config|
       "--paravirtprovider", "kvm",
     ]
   end
+
+  config.vm.provision "ansible_local" do |ansible|
+    ansible.playbook = "provision/site.yml"
+  end
 end
