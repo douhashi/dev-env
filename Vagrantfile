@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "elementary-loki"
+  config.vm.box = "ubuntu/trusty64"
 
   config.vm.network "forwarded_port", guest: 3000, host: 3000
   config.vm.network "private_network", ip: "192.168.33.10"
@@ -10,14 +10,15 @@ Vagrant.configure("2") do |config|
 
   # config.vm.synced_folder "../data", "/vagrant_data"
 
+  # fix "not a tty" error
+  config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
+
+
   config.vm.provider "virtualbox" do |vb|
-    vb.gui = true
     vb.cpus = 2
-    vb.memory = 2048
+    vb.memory = 4096
     vb.customize [
       "modifyvm", :id,
-      "--vram", "256",
-      "--accelerate3d", "on",
       "--hwvirtex", "on",
       "--nestedpaging", "on",
       "--largepages", "on",
@@ -26,6 +27,8 @@ Vagrant.configure("2") do |config|
       "--paravirtprovider", "kvm",
     ]
   end
+
+  config.vm.provision :shell, path: "provision/install-ansible.sh"
 
   config.vm.provision "ansible_local" do |ansible|
     ansible.playbook = "provision/site.yml"

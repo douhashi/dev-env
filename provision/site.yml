@@ -2,7 +2,5 @@
   become: yes
   user: vagrant
   tasks:
-    - name: atom ppa added.
-      apt_repository: repo='ppa:webupd8team/atom'
-    - name: atom installed.
-      package: name='atom' state='latest'
+    - name: vim-nox installed.
+      apt: name="vim-nox" state=present update_cache=yes
