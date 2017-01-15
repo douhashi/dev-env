@@ -1,6 +1,7 @@
 - hosts: all
   become: yes
   user: vagrant
-  tasks:
-    - name: vim-nox installed.
-      apt: name="vim-nox" state=present update_cache=yes
+  roles:
+    - role: zzet.rbenv
+    - role: mysql
+    - role: dev-env

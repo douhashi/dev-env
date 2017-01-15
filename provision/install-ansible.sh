@@ -9,4 +9,8 @@ else
 
   echo 'Instaling Ansible...'
   apt-get install -y --force-yes -qq ansible
+
 fi
+
+echo 'Installing requirements...'
+ansible-galaxy install -r /vagrant/provision/requirements.yml

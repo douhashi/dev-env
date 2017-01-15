@@ -1,0 +1,31 @@
+---
+- name: MySQL packages installed.
+  apt: name={{ item }} state=installed
+  with_items:
+    - mysql-server
+    - mysql-client
+    - libmysqld-dev
+    - libmysqlclient-dev
+    - python-mysqldb
+
+- name: set skip-grant-tables (insecure option!)
+  lineinfile: 
+    dest: /etc/mysql/mysql.conf.d/mysqld.cnf
+    line: skip-grant-tables
+
+- name: set character-set-server to utf8
+  ini_file: 
+    dest: /etc/mysql/mysql.conf.d/mysqld.cnf
+    section: mysqld
+    option: character-set-server
+    value: utf8
+
+- name: set defaut-character-set to utf8
+  ini_file: 
+    dest: /etc/mysql/conf.d/mysql.cnf
+    section: client
+    option: default-character-set
+    value: utf8
+
+- name: MySQL restarted
+  service: name=mysql state=restarted

@@ -2,17 +2,13 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "ubuntu/xenial64"
 
   config.vm.network "forwarded_port", guest: 3000, host: 3000
   config.vm.network "private_network", ip: "192.168.33.10"
   config.vm.hostname = "dev.local"
 
   # config.vm.synced_folder "../data", "/vagrant_data"
-
-  # fix "not a tty" error
-  config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
-
 
   config.vm.provider "virtualbox" do |vb|
     vb.cpus = 2
@@ -28,6 +24,8 @@ Vagrant.configure("2") do |config|
     ]
   end
 
+  config.vm.provision "file", source: "~/.ssh/id_rsa", destination: "~/.ssh/id_rsa"
+  config.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "~/.ssh/id_rsa.pub"
   config.vm.provision :shell, path: "provision/install-ansible.sh"
 
   config.vm.provision "ansible_local" do |ansible|

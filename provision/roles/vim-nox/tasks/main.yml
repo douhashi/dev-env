@@ -1,0 +1,5 @@
+---
+- name: vim-nox installed.
+  apt: name="vim-nox" state=present update_cache=yes
+- name: ctags installed.
+  apt: name="ctags" state=present update_cache=yes
