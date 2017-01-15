@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "elementary-loki"
+  config.vm.box = "ubuntu/xenial64"
 
   config.vm.network "forwarded_port", guest: 3000, host: 3000
   config.vm.network "private_network", ip: "192.168.33.10"
@@ -11,13 +11,10 @@ Vagrant.configure("2") do |config|
   # config.vm.synced_folder "../data", "/vagrant_data"
 
   config.vm.provider "virtualbox" do |vb|
-    vb.gui = true
     vb.cpus = 2
-    vb.memory = 2048
+    vb.memory = 4096
     vb.customize [
       "modifyvm", :id,
-      "--vram", "256",
-      "--accelerate3d", "on",
       "--hwvirtex", "on",
       "--nestedpaging", "on",
       "--largepages", "on",
@@ -25,5 +22,13 @@ Vagrant.configure("2") do |config|
       "--pae", "on",
       "--paravirtprovider", "kvm",
     ]
+  end
+
+  config.vm.provision "file", source: "~/.ssh/id_rsa", destination: "~/.ssh/id_rsa"
+  config.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "~/.ssh/id_rsa.pub"
+  config.vm.provision :shell, path: "provision/install-ansible.sh"
+
+  config.vm.provision "ansible_local" do |ansible|
+    ansible.playbook = "provision/site.yml"
   end
 end

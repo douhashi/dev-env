@@ -1,0 +1,5 @@
+---
+dependencies:
+  - role: vim-nox
+  - role: zsh
+  - role: tmux

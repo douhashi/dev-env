@@ -1,0 +1,30 @@
+---
+- name: set permissions to SSH private key.
+  file: dest=~/.ssh/id_rsa mode=0600
+  become: yes
+  become_user: "{{ rbenv_users }}"
+- name: set permissions to SSH public key.
+  file: dest=~/.ssh/id_rsa.pub mode=0600
+  become: yes
+  become_user: "{{ rbenv_users }}"
+- name: clone dotfiles
+  git: repo=git@github.com:douhashi/dotfiles.git dest=~/dotfiles accept_hostkey=yes
+  become: yes
+  become_user: "{{ rbenv_users }}"
+- name: run install_dotfiles shell
+  shell:
+    cmd: ./install_dotfiles
+  args:
+    chdir: ~/dotfiles
+  become: yes
+  become_user: "{{ rbenv_users }}"
+
+# install dein
+- name: create directory for dein
+  file: path=~/.vim/dein/repos/github.com/Shougo/dein.vim state=directory recurse=yes
+  become: yes
+  become_user: "{{ rbenv_users }}"
+- name: dein installed
+  git: repo=https://github.com/Shougo/dein.vim.git dest=~/.vim/dein/repos/github.com/Shougo/dein.vim accept_hostkey=yes
+  become: yes
+  become_user: "{{ rbenv_users }}"
