@@ -1,5 +1,8 @@
+# user
+user: ubuntu
+
 # zzet.rbenv
-rbenv_users: ubuntu
+rbenv_users: "{{ user }}"
 rbenv:
   env: user
   version: v1.1.0

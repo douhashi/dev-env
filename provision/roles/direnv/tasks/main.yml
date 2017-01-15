@@ -1,0 +1,21 @@
+---
+- name: clone direnv
+  git: repo=http://github.com/zimbatm/direnv dest=/usr/local/src/direnv accept_hostkey=yes
+- name: install direnv
+  shell:
+    cmd: make install
+  args:
+    chdir: /usr/local/src/direnv
+- name: set EDITOR for direnv
+  lineinfile: 
+    dest: ~/.zshrc
+    line: "export EDITOR=vim"
+  become: yes
+  become_user: "{{ user }}"
+
+- name: set direnv setting
+  lineinfile: 
+    dest: ~/.zshrc
+    line: "eval \"$(direnv hook zsh)\""
+  become: yes
+  become_user: "{{ user }}"

@@ -4,4 +4,5 @@
   roles:
     - role: zzet.rbenv
     - role: mysql
+    - role: direnv
     - role: dev-env

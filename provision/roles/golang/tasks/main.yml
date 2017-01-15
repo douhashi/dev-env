@@ -1,0 +1,20 @@
+---
+- name: golang installed
+  apt: name="golang" state=present update_cache=yes
+
+- name: create directory for go path
+  file: path=~/go state=directory recurse=yes
+  become: yes
+  become_user: "{{ user }}"
+- name: set GOPATH
+  lineinfile: 
+    dest: ~/.zshrc
+    line: "export GOPATH=$HOME/go"
+  become: yes
+  become_user: "{{ user }}"
+- name: set path to go
+  lineinfile: 
+    dest: ~/.zshrc
+    line: "export PATH=$PATH:$HOME/go/bin:/usr/local/go/bin"
+  become: yes
+  become_user: "{{ user }}"
