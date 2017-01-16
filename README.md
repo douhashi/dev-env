@@ -7,3 +7,6 @@
 ```
 $ vagrant plugin install vagrant-hostsupdater
 ```
+
+
+test test
